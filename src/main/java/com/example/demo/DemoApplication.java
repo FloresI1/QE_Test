@@ -2,31 +2,30 @@ package com.example.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @SpringBootApplication
 @RestController
 public class DemoApplication {
+
+	private String storedData = null;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
 	@GetMapping("/ok")
-	public String okGet(@RequestParam(name = "data", required = false) String data) {
-		if (data != null) {
-			return "Response to GET request: " + data;
+	public String okGet() {
+		if (storedData == null) {
+			return "Response to GET request: No data available.";
 		} else {
-			return "Response to GET request: OK!";
+			return "Response to GET request: " + storedData;
 		}
 	}
 
 	@PostMapping("/ok")
 	public String okPost(@RequestBody String requestBody) {
-		return "Response to POST request: " + requestBody;
+		storedData = requestBody;
+		return "Response to POST request: Data saved.";
 	}
 }
